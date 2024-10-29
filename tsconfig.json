@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2023",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["main-api/*"]
+    }
+  },
+  "files": [
+    "main-api/type.d.ts"
+  ],
+  "include": [
+    "main-api/**/*"
+  ]
+}
