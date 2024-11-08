@@ -20,24 +20,43 @@ export class AiAgentController {
 
   public async chat(req: Request, res: Response, next: NextFunction) {
     try {
-      const cozeStream = await this.aiAgentService.chatStream(req.body.prompt);
+      const cozeStream = await this.aiAgentService.chatStream(
+        req.query.message as string
+      );
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
 
+      let buffer = '';
+
       cozeStream.on('data', (chunk: Buffer) => {
-        const data = chunk.toString();
-        console.log('Streaming chunk:', data);
-        res.write(`data: ${data}\n\n`);
+        buffer += chunk.toString();
+        const events = buffer.split('\n\n');
+        buffer = events.pop() || '';
+        events.forEach((event) => {
+          if (event.trim() !== '') {
+            const eventMatch = event.match(/event:(.*)\ndata:(.*)/s);
+            if (eventMatch) {
+              const eventName = eventMatch[1].trim();
+              const eventData = eventMatch[2].trim();
+              if (eventName !== '') {
+                console.log('Event:', eventName);
+                res.write(`event: ${eventName}\n`);
+                res.write(`data: ${eventData}\n\n`);
+              }
+            } else {
+              res.write(`data: ${event}\n\n`);
+            }
+          }
+        });
       });
 
       cozeStream.on('end', () => {
         console.log('Stream ended');
-        res.write('event: done\n\n');
         res.end();
       });
 
-      cozeStream.on('error', (error) => {
+      cozeStream.on('error', (error: Error) => {
         console.error('Stream error:', error);
         res.status(500).json({ error: 'Streaming error' });
         res.end();

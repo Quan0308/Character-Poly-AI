@@ -23,7 +23,12 @@ export class Server {
   }
 
   private configureApp(): void {
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      })
+    );
     this.app.use(bodyParser.json());
     this.app.use(errorHandler);
   }

@@ -9,7 +9,7 @@ export const AiAgentRoutesV1 = [
 
 export const AiAgentRoutesV3 = [
   {
-    method: 'post',
+    method: 'get',
     route: '/agent/chatting',
     controller: 'AiAgentControllerV3',
     action: 'chat',
