@@ -40,7 +40,6 @@ export class AiAgentController {
               const eventName = eventMatch[1].trim();
               const eventData = eventMatch[2].trim();
               if (eventName !== '') {
-                console.log('Event:', eventName);
                 res.write(`event: ${eventName}\n`);
                 res.write(`data: ${eventData}\n\n`);
               }
