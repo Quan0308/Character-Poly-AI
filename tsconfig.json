@@ -10,12 +10,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "baseUrl": "."    
+    "baseUrl": ".",
+    "outDir": "./dist"
   },
-  "files": [
-    "main-api/type.d.ts"
-  ],
-  "include": [
-    "main-api/**/*"
-  ]
+  "files": ["main-api/type.d.ts"],
+  "include": ["main-api/**/*"]
 }
